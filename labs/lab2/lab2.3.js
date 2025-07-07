@@ -1,3 +1,4 @@
+//lab 2.3
 //Lab 2.1 + Suggest user to increase/decrease weight
 
 //Get input from user about height(m) and weight(kg) then calculate BMI
@@ -46,27 +47,27 @@ while(true){//1. Tạo vòng lặp -> Chỉ kết thúc vòng lặp khi user nh�
 
 }
 
-let BMI = weight/(height * height);
-let minWeight = 18.51 * (height * height);
-let maxWeight = 24.91 * (height * height);
+let BMI = Math.floor((weight/(height * height))*100)/100;
+let minWeight = 18.5 * (height * height);
+let maxWeight = 24.9 * (height * height);
 let targetWeight
 
-console.log(`Your BMI is: ${BMI.toFixed(2)}`);
+console.log(`Your BMI is: ${BMI}`);
 if(BMI<18.50){
     console.log("Underweight");
-    targetWeight = minWeight - weight;
-    console.log(`User should increase about ${targetWeight.toFixed(2)} to reach normal weight`);
-}else if((BMI >=18.50) && (BMI<25.00)){
+    targetWeight = Math.floor((minWeight - weight)*100)/100;
+    console.log(`User should increase about ${targetWeight} to reach normal weight`);
+}else if(BMI<25.00){
     console.log("Normal weight");
-}else if((BMI>=25.00) && (BMI<=30.00)){
+}else if(BMI<=30.00){
     console.log("Overweight");
-    targetWeight = weight - maxWeight;
-    console.log(`User should decrease about ${targetWeight.toFixed(2)} to reach normal weight`);
+    targetWeight = Math.floor((weight - maxWeight)*100)/100;
+    console.log(`User should decrease about ${targetWeight} to reach normal weight`);
 
 }else{
     console.log("Obesity");
-    targetWeight = weight - maxWeight;
-    console.log(`User should decrease about ${targetWeight.toFixed(2)} to reach normal weight`);
+     targetWeight = Math.floor((weight - maxWeight)*100)/100;
+    console.log(`User should decrease about ${targetWeight} to reach normal weight`);
 }
     
 
