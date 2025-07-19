@@ -6,10 +6,7 @@ let isEvenNumber = (inputNumber % 2 ===0);
 
 
 
-
-
-
-if (inputNumber ===0){
+if (inputNumber === 0){
     console.log("Zero is not considered as even/odd number:");
 }else if (isEvenNumber){
     console.log(`The ${inputNumber} is an even number!`);
