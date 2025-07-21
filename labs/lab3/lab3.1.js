@@ -4,14 +4,14 @@
 
 let intArr = [1, 2, 3, 4, 5];
 
-// Even numders: 2
+// Even numbers: 2
 // Odd numbers: 3
+
+function countOddEvenNumber(array) {
 let evenArray = [];
 let oddArray = [];
-
 let oddCount;
 let evenCount;
-function countOddEvenNumber(array) {
     for (let i = 0; i < array.length; i++) {
         if (array[i] % 2 === 0) {
             evenArray.push(array[i]);
