@@ -7,7 +7,7 @@ let intArr = [11, 2, 3, 4, 5];
 // Minimum: 1
 // Maximum: 5
 
-function checkMinNumber(array) {
+function checkMinMaxNumber(array) {
     let minNumber = array[0];
     let maxNumber = array[0];
     for (let i = 0; i < array.length; i++) {
@@ -27,7 +27,7 @@ function checkMinNumber(array) {
 let result = checkMinNumber(intArr)
 
 console.log(`Check min number ${result.min}`);
-console.log(`Check min number ${result.max}`);
+console.log(`Check max number ${result.max}`);
 
 
 
