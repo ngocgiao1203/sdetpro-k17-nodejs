@@ -3,8 +3,9 @@ let barArray = [1, 13, 16, 27, 99];
 
 let mergedArray = [];
 
-
-for(;fooPosition < fooLength && barPosition < barLength;){
+let fooPosition
+let barPosition
+for(; fooPosition < fooArray.length && barPosition < barArray.length;){
     const fooValue = fooArray[fooPosition];
     const barValue = barArray[barPosition];
 
@@ -17,9 +18,9 @@ for(;fooPosition < fooLength && barPosition < barLength;){
     }
 }
 
-for(; fooPosition < fooLength; fooPosition){
+for(; fooPosition < fooArray.length; fooPosition++){
     mergedArray.push(fooArray[fooPosition]);
 }
-for(; barPosition < barLength; barPosition){
+for(; barPosition < barArray.length; barPosition++){
     mergedArray.push(barArray[barPosition]);
 }
