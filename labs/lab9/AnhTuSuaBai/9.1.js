@@ -10,36 +10,37 @@ app();
 /* 
 1. if (!isPlaying) return; & case 0: isPlaying = false CÓ ĐANG CÙNG MỤC ĐÍCH SD KO?
 2. tại sao return 1 function                         return handleGetPostContent();
-    -> return giá trị dc trả ra bởi function đó
 3. Tại sao sau khi run function handlePromise(), lại có then handlePromise()
 
 
 */
 //Support functions
 function app() {
-    // let isPlaying = true; //global variable cho app()
-    // while(isPlaying){
-        handlePromise()
-    // }
-
+    let isPlaying = true; //global variable cho app()
+    while (isPlaying) {
+        handlePromise();
+        break;
+    }
+    
     function handlePromise() {
+        if (!isPlaying) return; 
+
         printMenu();
-        getUserOptionPromise()
+        getUserOption()
             .then(function (userOption) {
                 switch (userOption) {
                     case 1:
                         return handleGetPostContent();
                     case 2:
-                        return handleGetAllPostsPromise(); //lấy tất cả các posts liên quan đến user đó
+                        return handleGetAllPosts(); //lấy tất cả các posts liên quan đến user đó
                     case 0:
-                        // isPlaying = false;
+                        isPlaying = false;
                         console.log(`See you again!`);
                         break;
                     default:
                         console.log("Nhap lui roi Teo oi...");
                 }
-            }).then(handlePromise) //ở bề nổi: hoạt động thay thế While(true)
-            // .then(handlePromise); //đệ quy
+            }).then(handlePromise); //đệ quy
                                     //Chờ khi promise dc giải quyết xong, mình sẽ gọi đúng hàm đó lại
                                     //Khi run dòng 26 -> "then" của dòng 37 sẽ chịu trách nhiệm chờ
     }
@@ -53,20 +54,17 @@ function printMenu() {
     `);
 }
 
-// Promise
-function getUserOptionPromise() {
-    const userOption = new Promise(function (resolve) {
-        const userInput = _getUserInput("Select your option: ")
-        resolve(userInput);
+function getUserOption() {
+    return new Promise(function (resolve) {
+        resolve(_getUserInput("Select your option: "));
     });
-    return userOption;
 }
 
 //Support function
 function handleGetPostContent() {
     const userId = _getUserInput("userId: ");
 
-    return _getAllPostForUserPromise(userId).then(function (returnedData) {
+    return _getAllPostForUser(userId).then(function (returnedData) {
         if(returnedData.hasUser){
             const postId = _getUserInput("postId: ");
             const targetPost = returnedData.userRelatedPosts.filter(function (post) {
@@ -77,16 +75,16 @@ function handleGetPostContent() {
     });
 }
 
-function handleGetAllPostsPromise() {
+function handleGetAllPosts() {
     const userId = _getUserInput("userId: ");
-    return _getAllPostForUserPromise(userId).then(function (returnedData) {
+    return _getAllPostForUser(userId).then(function (returnedData) {
         if(returnedData.hasUser){
             console.log(returnedData.userRelatedPosts);
         }
     });
 }
 
-function _getAllPostForUserPromise(userId) {
+function _getAllPostForUser(userId) {
     return fetch(`${USER_ENDPOINT}/${userId}`)
         .then(function (userResponse) {
             // console.log(userResponse);
@@ -96,7 +94,7 @@ function _getAllPostForUserPromise(userId) {
                 return fetch(POST_ENDPOINT)
                     .then(function (response) {
                         return response.json()
-                            .then(function (postResponse) { 
+                            .then(function (postResponse) {
                                     const userRelatedPosts = postResponse.filter(function (post) {
                                         //userRelatedPosts: return 1 array
                                         return post.userId === userId;
@@ -122,9 +120,3 @@ function _getUserInput(question) {
 //User tồn tại + post tồn tại
 //User tồn tại + post ko tồn tại
 //User ko tồn tại
-
-
-
-
-
-
