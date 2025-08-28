@@ -4,44 +4,36 @@ const BASE_URL = "https://jsonplaceholder.typicode.com";
 const USER_ENDPOINT = `${BASE_URL}/users`;
 const POST_ENDPOINT = `${BASE_URL}/posts`;
 
-//Main function
+
+//main function
 app();
 
-/* 
-1. if (!isPlaying) return; & case 0: isPlaying = false CÓ ĐANG CÙNG MỤC ĐÍCH SD KO?
-2. tại sao return 1 function                         return handleGetPostContent();
-    -> return giá trị dc trả ra bởi function đó
-3. Tại sao sau khi run function handlePromise(), lại có then handlePromise()
+function app(){
+    let isPlaying = true;
 
-
-*/
-//Support functions
-function app() {
-    // let isPlaying = true; //global variable cho app()
-    // while(isPlaying){
-        handlePromise()
-    // }
+    handlePromise();
 
     function handlePromise() {
+        if(isPlaying){
         printMenu();
-        getUserOptionPromise()
-            .then(function (userOption) {
-                switch (userOption) {
-                    case 1:
+        getUserOption()
+            .then(function(userOption){
+                switch(userOption){
+                    case 1: 
                         return handleGetPostContent();
                     case 2:
-                        return handleGetAllPostsPromise(); //lấy tất cả các posts liên quan đến user đó
+                        return handleGetAllPostsForAllUser();
                     case 0:
-                        // isPlaying = false;
-                        console.log(`See you again!`);
+                        isPlaying = false;
+                        console.log(`See you again`);
                         break;
                     default:
-                        console.log("Nhap lui roi Teo oi...");
+                        console.log(`Nhap lui roi`);                      
                 }
-            }).then(handlePromise) //ở bề nổi: hoạt động thay thế While(true)
-            // .then(handlePromise); //đệ quy
-                                    //Chờ khi promise dc giải quyết xong, mình sẽ gọi đúng hàm đó lại
-                                    //Khi run dòng 26 -> "then" của dòng 37 sẽ chịu trách nhiệm chờ
+            }).then(handlePromise);
+        }else{
+            return;
+        }
     }
 }
 
@@ -53,78 +45,72 @@ function printMenu() {
     `);
 }
 
-// Promise
-function getUserOptionPromise() {
-    const userOption = new Promise(function (resolve) {
-        const userInput = _getUserInput("Select your option: ")
-        resolve(userInput);
-    });
-    return userOption;
+function getUserOption(){
+    return new Promise (function (resolve){
+        resolve(_getUserInput("Select your option: ")) ;
+    })
 }
 
-//Support function
-function handleGetPostContent() {
+function handleGetPostContent(){
     const userId = _getUserInput("userId: ");
-
-    return _getAllPostForUserPromise(userId).then(function (returnedData) {
+    return _getAllPostForUser(userId).then(function (returnedData){
         if(returnedData.hasUser){
             const postId = _getUserInput("postId: ");
-            const targetPost = returnedData.userRelatedPosts.filter(function (post) {
-                return post.id === postId;
-            });
-            console.log(targetPost);
-        }
-    });
+            const returnedPostContent = returnedData.returnedPostsForUser.filter(function(response){
+                return response.id === postId;
+            })
+            console.log(returnedPostContent);
+    }
+})
 }
 
-function handleGetAllPostsPromise() {
+function handleGetAllPostsForAllUser(){
     const userId = _getUserInput("userId: ");
-    return _getAllPostForUserPromise(userId).then(function (returnedData) {
-        if(returnedData.hasUser){
-            console.log(returnedData.userRelatedPosts);
+    return _getAllPostForUser(userId).then(function(returnedAllPost){
+        if (returnedAllPost.hasUser){
+            console.log(returnedAllPost.returnedPostsForUser);
         }
-    });
+    })
+ 
 }
 
-function _getAllPostForUserPromise(userId) {
+function _getAllPostForUser(userId){
     return fetch(`${USER_ENDPOINT}/${userId}`)
-        .then(function (userResponse) {
-            // console.log(userResponse);
-            const hasUser = userResponse.ok;
-            if (hasUser) {
-                //Logic to get post for that user
-                return fetch(POST_ENDPOINT)
-                    .then(function (response) {
-                        return response.json()
-                            .then(function (postResponse) { 
-                                    const userRelatedPosts = postResponse.filter(function (post) {
-                                        //userRelatedPosts: return 1 array
-                                        return post.userId === userId;
-                                    });
-                                    return {
-                                        hasUser: true,
-                                        userRelatedPosts: userRelatedPosts
-                                    }
-                            });
-                    });
-            } else {
-                console.log(`UserId ${userId} is not existing!`);
-                return { hasUser: false };
+        .then(function(userResponse){
+            let hasUser = userResponse.ok;
+            if(hasUser){
+                // console.log(hasUser);
+                
+                return fetch (POST_ENDPOINT)
+                    .then (function (postResponse){
+                        // console.log(postResponse);
+                        
+                        return postResponse.json()
+                            .then (function (response){
+                                // console.log(response);
+                                
+                                const returnedPostsForUser = response.filter(function (post){
+                                    // console.log(post)
+                                    return post.userId === userId;
+                                })
+                                // console.log(returnedPostsForUser);
+                                
+                                return{
+                                    hasUser: true,
+                                    returnedPostsForUser: returnedPostsForUser
+                                }
+                           })                
+                        
+            })}else{
+                console.log(`User ID ${userId} is not existing`);
+                return { hasUser: false};
+                
             }
-        });
+            
+            })
+        
 }
 
-function _getUserInput(question) {
-  return Number(readline.question(question));
+function _getUserInput(question){
+    return Number(readline.question(question));
 }
-
-//Test cho case 1: handleGetPostContent
-//User tồn tại + post tồn tại
-//User tồn tại + post ko tồn tại
-//User ko tồn tại
-
-
-
-
-
-

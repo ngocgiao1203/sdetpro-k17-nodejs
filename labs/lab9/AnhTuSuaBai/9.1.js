@@ -17,32 +17,40 @@ app();
 //Support functions
 function app() {
     let isPlaying = true; //global variable cho app()
-    while (isPlaying) {
+    while (true) {
         handlePromise();
+        // console.log(`Below handle promise `);
+        
         break;
     }
+    // console.log(`outofwhile`);
+    
     
     function handlePromise() {
-        if (!isPlaying) return; 
-
-        printMenu();
-        getUserOption()
-            .then(function (userOption) {
-                switch (userOption) {
-                    case 1:
-                        return handleGetPostContent();
-                    case 2:
-                        return handleGetAllPosts(); //lấy tất cả các posts liên quan đến user đó
-                    case 0:
-                        isPlaying = false;
-                        console.log(`See you again!`);
-                        break;
-                    default:
-                        console.log("Nhap lui roi Teo oi...");
-                }
-            }).then(handlePromise); //đệ quy
-                                    //Chờ khi promise dc giải quyết xong, mình sẽ gọi đúng hàm đó lại
-                                    //Khi run dòng 26 -> "then" của dòng 37 sẽ chịu trách nhiệm chờ
+        // if (!isPlaying) return; //Nếu user ko chơi nữa -> break
+        if (isPlaying){
+            printMenu();
+            getUserOption()
+                .then(function (userOption) {
+                    switch (userOption) {
+                        case 1:
+                            return handleGetPostContent();
+                        case 2:
+                            return handleGetAllPosts(); //lấy tất cả các posts liên quan đến user đó
+                        case 0:
+                            isPlaying = false;
+                            console.log(`See you again!`);
+                            break;
+                        default:
+                            console.log("Nhap lui roi Teo oi...");
+                    }
+                })
+                .then(handlePromise); //đệ quy
+                                        //Chờ khi promise dc giải quyết xong, mình sẽ gọi đúng hàm đó lại
+                                        //Khi run dòng 26 -> "then" của dòng 37 sẽ chịu trách nhiệm chờ
+        }else{
+            return
+        } 
     }
 }
 
@@ -56,7 +64,8 @@ function printMenu() {
 
 function getUserOption() {
     return new Promise(function (resolve) {
-        resolve(_getUserInput("Select your option: "));
+        let userInput = _getUserInput("Select your option: ")
+        resolve(userInput);
     });
 }
 
@@ -88,7 +97,13 @@ function _getAllPostForUser(userId) {
     return fetch(`${USER_ENDPOINT}/${userId}`)
         .then(function (userResponse) {
             // console.log(userResponse);
-            const hasUser = userResponse.ok;
+                // return userResponse.json()
+                //     .then(function (res){
+                //         console.log(res.id); 
+                //     })
+                
+                
+            const hasUser = userResponse.ok; //fetch() support return "ok"
             if (hasUser) {
                 //Logic to get post for that user
                 return fetch(POST_ENDPOINT)
