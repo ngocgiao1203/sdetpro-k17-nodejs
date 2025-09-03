@@ -1,3 +1,4 @@
+// tính tổng số lương phải trả cho toàn bộ công ty  
 class Employee{
 
     constructor(salary){
@@ -12,4 +13,6 @@ class Employee{
         return this._salary;
     }
 }
-module.exports = Employee;
+module.exports = Employee; //Nếu ko export sẽ ko thể dùng dc
+
+

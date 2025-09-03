@@ -21,15 +21,15 @@ class Person {
 module.exports = Person; //xuất khẩu class
 
 //teo is an object that was created from Person Class Template
-let teo = new Person("Teo", 18);
+let teo = new Person("Teo", 18); //teo là 1 instance của Person (class)
 //Vay mượn từ khóa new. Khi gọi new, là đang gọi constructor trong class Person 
 //Tạo ra 1 new person tên Tèo
 
 //Break Encapsulation | Violation
-console.log(teo.name);
-teo.name = "Teo dep trai"
+console.log(teo.getName());
+teo.setName("Teo dep trai")
 // teo.setName("Teo Dep Trai");
-console.log(teo.name);
+console.log(teo.getName());
 
 
 
