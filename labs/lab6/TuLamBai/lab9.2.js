@@ -18,22 +18,20 @@ async function app(){
             return;
         }else{
             printMenu();
-        let userOption = await getUserOption();
-        // getUserOption()
-        //     .then(function(userOption){
-        switch(userOption){
-            case 1: 
-                return handleGetPostContent();
-            case 2:
-                return handleGetAllPostsForAllUser();
-            case 0:
-                isPlaying = false;
-                console.log(`See you again`);
-                break;
-            default:
-                console.log(`Nhap lui roi`);                      
-            }
-        }        await handlePromise;
+            let userOption = await getUserOption();
+            switch(userOption){
+                case 1: 
+                    return handleGetPostContent();
+                case 2:
+                    return handleGetAllPostsForAllUser();
+                case 0:
+                    isPlaying = false;
+                    console.log(`See you again`);
+                    break;
+                default:
+                    console.log(`Nhap lui roi`);                      
+                }
+        }await handlePromise;
 
         }
     }

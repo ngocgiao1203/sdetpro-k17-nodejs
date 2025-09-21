@@ -8,13 +8,13 @@ class SalaryController{
         let totalSalary = 0;
         for(const emp of employeeList){
             totalSalary = totalSalary + emp.salary; //salary cũ + employee's salary
+            // totalSalary += emp.salary;
         }
         return totalSalary;
     }
 
 }
 
-let salaryController = new SalaryController();
 module.exports = SalaryController;
 
 

@@ -7,7 +7,7 @@ class Person {
         this._age = age;
     }
 
-    //1 hàm bên trong 1 class - ko dùng từ "Method"
+    //1 hàm bên trong 1 class dgl "Method" - ko dùng từ "function"
     //Getters: is a function that return the CURRENT value of a property
     getName(){
         return this._name;
@@ -23,7 +23,7 @@ module.exports = Person; //xuất khẩu class
 //teo is an object that was created from Person Class Template
 let teo = new Person("Teo", 18); //teo là 1 instance của Person (class)
 //Vay mượn từ khóa new. Khi gọi new, là đang gọi constructor trong class Person 
-//Tạo ra 1 new person tên Tèo
+//Tạo ra 1 new person tên "teo"
 
 //Break Encapsulation | Violation
 console.log(teo.getName());
